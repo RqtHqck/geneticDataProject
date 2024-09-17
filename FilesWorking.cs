@@ -5,8 +5,7 @@ namespace GeneticsProject
 {
     public class FileWorking
     {
-        public static void ReadGeneticData(string filename)
-        {
+        public static void ReadGeneticData(string filename){
             // Функиця для чтения в массив структур генетических данных
             // Файл sequences.txt
             using (StreamReader reader = new StreamReader(filename))
@@ -24,37 +23,56 @@ namespace GeneticsProject
                 }
             }
         }
-        public static void ReadHandleCommands(string filename)
-        {
+        public static void ReadHandleCommands(string filename){
             using (StreamReader reader = new StreamReader(filename))
             {
+                string resultString = null;
                 int counter = 0;
                 while (!reader.EndOfStream)
                 {
                     string line = reader.ReadLine();
+                    if (counter == 0) {
+                        Utils.PrintProgramInfo("Ihar Tsitou\nGenetic Searching\n--------------------------------------------------------------------------");
+                    }
                     counter++;
                     string[] command = line.Split('\t');
+
                     if (command[0].Equals("search"))
                     {
                         // 001   search  SIIK
-                        Console.WriteLine($"{counter.ToString("D3")}   {"search"}   {Utils.Decoding(command[1])}");
+                        Utils.PrintProgramInfo($"{counter.ToString("D3")}\t\t{command[0]}\t\t{Utils.Decoding(command[1])}");
+                        Utils.PrintProgramInfo($"organism\t\tprotein");
                         int index = Modes.Search(command[1]);
                         if (index != -1)
-                            Console.WriteLine($"{Program.data[index].organism}    {Program.data[index].name}");
+                            Utils.PrintProgramInfo($"{Program.data[index].organism}\t\t{Program.data[index].name}");
                         else
-                            Console.WriteLine("NOT FOUND");
-                        Console.WriteLine("================================================");
+                            Utils.PrintProgramInfo("NOT FOUND");
+                        Utils.PrintProgramInfo("--------------------------------------------------------------------------");
                     }
+
                     if (command[0].Equals("diff"))
                     {
-                        // Implement diff functionality
+                        Utils.PrintProgramInfo($"{counter.ToString("D3")}\t\t{command[0]}\t\t{command[1]}\t\t{command[2]}");
+                        int differents  = Modes.Diff(command[1], command[2]);
+                        Utils.PrintProgramInfo($"amino-acids difference:\n{differents}");
+                        Utils.PrintProgramInfo("--------------------------------------------------------------------------");
                     }
                     if (command[0].Equals("mode"))
                     {
-                        // Implement mode functionality
+                        Utils.PrintProgramInfo($"{counter.ToString("D3")}\t\t{command[0]}\t\t{Utils.Decoding(command[1])}");
+                        (char mostFrequentChar, int mostFrequentAmount) = Modes.Mode(command[1]);
+                        Utils.PrintProgramInfo($"amino-acid occurs:\n{mostFrequentChar}\t\t{mostFrequentAmount}");
+                        Utils.PrintProgramInfo("--------------------------------------------------------------------------");
                     }
                 }
             }
+        }
+        public static void WriteInfoIntoFile() {
+            string filePath = "./output/output.txt";
+            // Запись строки в файл
+            File.WriteAllText(filePath, Program.resultInfo);
+
+            Console.WriteLine("Данные программы успешно записаны в файл ./output/output.txt");
         }
     }
 

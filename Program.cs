@@ -14,20 +14,18 @@ namespace GeneticsProject
     class Program
     {
         public static List<GeneticData> data = new List<GeneticData>(); 
-        public static int count = 1;
+        public static int count = 1;    
+        public static string resultInfo = "";  // Переменная для общего вывода
 
 
         static void Main(string[] args)
         {
-            // Console.WriteLine(Utils.Encoding("AAAAAAAATATTTCGCTTTTCAAAAATTGTCAGATGAGAGAAAAAATAAAA"));
-            // Modes.Search('MLQSIIKNIWIPMKPYYTKVYQEIWIGMGLMGFIVYKIRAADKRSKALKASAPAPGHH');
-            // string formula2 = Utils.Decoding("FK3I");
-            // FileWorking.ReadGeneticData("./gendata/gendata.0.txt");
-            // Console.WriteLine("=============Search===================");
-            // FileWorking.ReadHandleCommands("./commands/commands.0.txt");
-            // Console.WriteLine("=============Get Formula of the Protein===================");
-            // string formula = Utils.GetFormula("6.8 kDa mitochondrial proteolipid");
-            // if (formula != null) Console.WriteLine(formula);
+            // Читаем генетические данные
+            FileWorking.ReadGeneticData("./gendata/gendata.0.txt");
+            // Читаем комманды и выполняем мод
+            FileWorking.ReadHandleCommands("./commands/commands.0.txt");
+            Console.WriteLine(resultInfo);
+            FileWorking.WriteInfoIntoFile();
         }
     }
 }

@@ -5,9 +5,8 @@ namespace GeneticsProject
 {
     public class Modes
     {
-        public static int Search(string amino_acid)
-        {
-            // Поиск. Ищет подстроку в формуле белка (аминокислотах)
+        public static int Search(string amino_acid){
+            // Поиск. Ищет подстроку в формулах белка (аминокислотах)
             // FKIII -> FK3I
             string decoded = Utils.Decoding(amino_acid);
             for (int i = 0; i < Program.data.Count; i++)
@@ -17,28 +16,46 @@ namespace GeneticsProject
             return -1;
         }
 
-        public static int Diff(string protein1, string protein2)
-        {
+        public static int Diff(string proteinName1, string proteinName2){
             // Сравнение. Показывает сколько символов отличается в формуле белка (аминокислотах)
-            // Implement the diff logic
+            string formula1 = null; 
+            string formula2 = null;
+
+            for (int i = 0; i < Program.data.Count; i++) {
+                if (Program.data[i].name == proteinName1) {
+                    formula1 = Program.data[i].formula;
+                }
+                if (Program.data[i].name == proteinName2) {
+                    formula2 = Program.data[i].formula;
+                }
+            }
+
             int counter = 0;
-            int minLength = Math.Min(protein1.Length, protein2.Length);
+            int minLength = Math.Min(formula1.Length, formula2.Length);
 
             for (int i = 0; i < minLength; i++)
             {
-                if (protein1[i] != protein2[i]) counter++;
+                if (formula1[i] != formula2[i]) counter++;
             }
 
             // Count the remaining characters if the lengths are different
-            counter += Math.Abs(protein1.Length - protein2.Length);
+            counter += Math.Abs(formula1.Length - formula2.Length);
 
             return counter;
         }
 
-        public static void Mode()
-        {
+        public static (char, int) Mode(string proteinName1){
             // Ищет во входных данных указанный белок, а в его цепочке аминокислоту, которая встречается чаще всего.
-            // Implement mode functionality
+            string formula = null;
+            for (int i = 0; i < Program.data.Count; i++) {
+                if (Program.data[i].name == proteinName1) {
+                    formula = Program.data[i].formula;
+                    break;
+                }
+            }
+            var (symbol, frequency) = Utils.FindMostFrequentChar(formula);
+            
+            return (symbol, frequency);
         }
     }
 }
